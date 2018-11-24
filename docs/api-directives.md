@@ -802,6 +802,32 @@ If your class is not in the default namespace, pass a fully qualified class name
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 ```
 
+## @search
+
+Define custom search function in your model.
+```graphql
+type Query {
+  users(find:String): [User!] @search
+}
+```
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+
+class User extends Model 
+{
+     public static function search($value):Builder {
+            return User::query()->where(  'name' , 'LIKE', '%'.$value.'%')
+                                ->orWhere('email', 'LIKE', '%'.$value.'%');
+     }
+}
+```
+
 ## @update
 
 Update an Eloquent model.
